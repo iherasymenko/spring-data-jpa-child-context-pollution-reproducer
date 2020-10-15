@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        // bisecting the commits revealed that the issue started appearing after a fix in the Spring Framework
+        // https://github.com/spring-projects/spring-framework/issues/24852
+        // 5.2.5 behaves normally
+        // mavenBom 'org.springframework:spring-framework-bom:5.2.5.RELEASE'
+        mavenBom 'org.springframework:spring-framework-bom:5.2.9.RELEASE'
+        mavenBom 'org.springframework.data:spring-data-releasetrain:Neumann-SR4'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.data:spring-data-jpa'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-orm'
+
+    implementation 'org.hibernate:hibernate-core:5.4.22.Final'
+    implementation 'com.h2database:h2:1.4.200'
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'junit:junit:4.13.1'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
